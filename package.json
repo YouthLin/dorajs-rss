@@ -1,0 +1,31 @@
+{
+  "name": "dorajs-rss",
+  "displayName": "RSS 聚合阅读",
+  "version": "1.0.0",
+  "uuid": "69e8910d-16aa-4bcf-be14-bcd9c5d6758d",
+  "description": "通过 RSS 订阅聚合阅读任何喜爱的站点",
+  "icon": "assets/icon.svg",
+  "prefs": "assets/prefs.json",
+  "main": "main.js",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Youth．霖"
+  },
+  "engineStrick": true,
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "updates": "",
+  "contributes": {
+    "search": null
+  },
+  "homepage": "",
+  "engines": {
+    "dora": ">=1.6.3"
+  },
+  "keywords": [
+    "Dora.js"
+  ],
+  "dependencies": {}
+}
