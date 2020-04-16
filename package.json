@@ -14,7 +14,7 @@
   "engineStrick": true,
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/YouthLin/dorajs-rss"
   },
   "updates": "",
   "contributes": {
@@ -27,5 +27,8 @@
   "keywords": [
     "Dora.js"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "feedparser": "^2.2.9",
+    "request": "^2.88.2"
+  }
 }
