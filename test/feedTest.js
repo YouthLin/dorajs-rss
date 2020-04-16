@@ -1,10 +1,8 @@
 const feed = require('../components/feed');
 feed('https://youthlin.com/feed')
-    .then(result => {
+    .then(site => {
         console.log('-----------------')
-        console.log(result.meta);
-        console.log('-----------------')
-        console.log(result.articles[0]);
+        //console.log(site);
     })
     .catch(error => {
         console.log(error);

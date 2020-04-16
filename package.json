@@ -1,7 +1,7 @@
 {
   "name": "dorajs-rss",
   "displayName": "RSS 聚合阅读",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "uuid": "69e8910d-16aa-4bcf-be14-bcd9c5d6758d",
   "description": "通过 RSS 订阅聚合阅读任何喜爱的站点",
   "icon": "assets/icon.svg",
