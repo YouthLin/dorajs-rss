@@ -1,11 +1,13 @@
 class Site {
-    constructor() {
-        this.id = 0;
-        this.feedUrl = '';
-        this.siteName = '';
-        this.siteUrl = '';
-        this.pubDate = '';
-        this.updateAt = new Date();
+    constructor(site = {}) {
+        this.feedUrl = site.feedUrl || '';
+        this.siteName = site.siteName || '';
+        this.siteUrl = site.siteUrl || '';
+        this.description = site.description || '';
+        this.pubDate = site.pubDate || '';
+        this.extData = site.extData || null;
+        this.createAt = site.createAt || new Date();
+        this.updateAt = site.updateAt || new Date();
     }
 }
 
