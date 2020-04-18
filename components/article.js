@@ -1,6 +1,7 @@
 // 文章页
 //------
 
+const Util = require('../util');
 const ArticleDao = require('../dao/ArticleDao');
 const articleDao = new ArticleDao();
 
@@ -16,7 +17,8 @@ module.exports = {
         }
 
         const categories = article.categories || [];
-        const prefix = categories.length > 0 ? '<p>分类：' + categories.join(', ') + '</p>' : '';
+        const prefix = `<p>时间：${Util.dateToString(article.pubDate)}` +
+            (categories.length > 0 ? '<br>分类：' + categories.join(', ')  : '') + '</p><hr>';
 
         const commentLink = article.commentLink || '';
         const url = guid.startsWith("http") ? `<a href="${guid}">阅读原文</a>` : '';

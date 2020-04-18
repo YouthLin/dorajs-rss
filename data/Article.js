@@ -6,6 +6,7 @@ class Article {
         this.author = article.author || null;
         this.summary = article.summary || '';
         this.image = article.image || null;
+        this.categories = article.categories || [];
         this.content = article.content || '';
         this.link = article.link || '';
         this.commentLink = article.commentLink || '';

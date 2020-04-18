@@ -1,3 +1,7 @@
+const LIST_STYLE = 'listStyle';
+const SIMPLE = 'simple';
+const ARTICLE = 'article';
+
 class Util {
     static log(...args) {
         console.log(...args);
@@ -59,6 +63,19 @@ class Util {
         }
         return null;
     }
+
+    static isSimpleStyle() {
+        return $prefs.get(LIST_STYLE) === SIMPLE;
+    }
+
+    static setSimpleStyle(simple) {
+        if (simple) {
+            $prefs.set(LIST_STYLE, SIMPLE);
+        } else {
+            $prefs.set(LIST_STYLE, ARTICLE);
+        }
+    }
+
 }
 
 module.exports = Util

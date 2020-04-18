@@ -15,6 +15,7 @@ module.exports = {
     actions: [
         {
             title: '添加',
+            icon: $icon('add'),
             onClick: async function () {
                 const feedUrl = await $input.prompt({
                     title: '请输入 RSS 地址',
@@ -27,20 +28,24 @@ module.exports = {
                         return;
                     }
                     $ui.toast('解析中, 请稍后...');
-
-                    const {site, articles} = await feed(feedUrl);
-                    Util.log('get feed, before save site:', site);
-                    siteDao.save(site);
-                    Util.log('before save articles: size=', articles.length);
-                    const saved = articleDao.save(feedUrl, articles);
-                    $ui.toast(`拉取了 ${saved.length} 篇新文章`);
-                    Util.log('after save articles');
-                    this.refresh();
+                    try {
+                        const {site, articles} = await feed(feedUrl);
+                        Util.log('get feed, before save site:', site);
+                        siteDao.save(site);
+                        Util.log('before save articles: size=', articles.length);
+                        const saved = articleDao.save(feedUrl, articles);
+                        $ui.toast(`拉取了 ${saved.length} 篇新文章`);
+                        Util.log('after save articles');
+                        this.refresh();
+                    } catch (e) {
+                        $ui.alert('发生了异常: ' + e);
+                    }
                 }
             }
         },
         {
             title: '移除',
+            icon: $icon('remove'),
             onClick: async function () {
                 const options = [];
                 const sites = siteDao.groupByFeedUrl();
@@ -58,9 +63,18 @@ module.exports = {
                     this.refresh();
                 }
             }
-        }
+        },
+        {
+            title: '切换样式',
+            icon: $icon('view_compact'),
+            onClick: function () {
+                Util.setSimpleStyle(!Util.isSimpleStyle());
+                this.refresh();
+            }
+        },
     ],
     async fetch() {
+        Util.log('on home page');
         const sites = await siteDao.listSites();
         return sites.map(site => ({
             title: site.siteName,
