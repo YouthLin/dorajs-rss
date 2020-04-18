@@ -18,7 +18,7 @@ module.exports = {
 
         const categories = article.categories || [];
         const prefix = `<p>时间：${Util.dateToString(article.pubDate)}` +
-            (categories.length > 0 ? '<br>分类：' + categories.join(', ')  : '') + '</p><hr>';
+            (categories.length > 0 ? '<br>分类：' + categories.join(', ') : '') + '</p><hr>';
 
         const commentLink = article.commentLink || '';
         const url = guid.startsWith("http") ? `<a href="${guid}">阅读原文</a>` : '';
@@ -30,7 +30,8 @@ module.exports = {
         return {
             content: {
                 title: article.title,
-                html: `<style>img{width:100%;height:auto;}</style>${prefix}${article.content}${suffix}`
+                html: `<style>img{width:100%;height:auto;}pre{max-width: 100%;overflow-x: scroll}</style>` +
+                    `${prefix}${article.content}${suffix}`
             }
         }
     }

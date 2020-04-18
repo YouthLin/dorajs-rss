@@ -12,6 +12,25 @@ module.exports = class ArticleDao {
         return Array.from(this.dao.get(ARTICLES_PREFIX + feedUrl) || []);
     }
 
+    /** 分页获取
+     * @param feedUrl feedUrl
+     * @param pageIndex 1开始 第几页
+     * @param pageSize 每页几条
+     **/
+    listPageByFeedUrl(feedUrl, pageIndex, pageSize) {
+        const all = this.listByFeedUrl(feedUrl);
+        let start = (pageIndex - 1) * pageSize;
+        let end = start + pageSize;
+        if (end > all.length) {
+            end = all.length;
+        }
+        return {
+            items: all.slice(start, end),
+            totalPage: Math.floor((all.length - 1) / pageSize) + 1,
+            hasNext: end < all.length,
+        };
+    }
+
     deleteByFeedUrl(feedUrl) {
         return this.dao.delete(ARTICLES_PREFIX + feedUrl);
     }

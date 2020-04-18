@@ -5,3 +5,6 @@ if (typeof $dora == 'undefined') {
 }
 
 console.info('Congratulation, your addon runs successfully!')
+$dora.mixin({
+    pageSize: 20
+});

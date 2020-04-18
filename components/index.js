@@ -9,9 +9,7 @@ const ArticleDao = require('../dao/ArticleDao');
 const articleDao = new ArticleDao();
 
 module.exports = {
-    // 顶部选项卡
-    type: 'topTab',
-    tabMode: 'scrollable',
+    type: 'drawer',
     actions: [
         {
             title: '添加',
@@ -20,7 +18,7 @@ module.exports = {
                 const feedUrl = await $input.prompt({
                     title: '请输入 RSS 地址',
                     hint: '示例：https://youthlin.com/feed',
-                    value: ''
+                    value: 'https://'
                 });
                 if (feedUrl) {
                     if (siteDao.groupByFeedUrl().has(feedUrl)) {
@@ -36,6 +34,8 @@ module.exports = {
                         const saved = articleDao.save(feedUrl, articles);
                         $ui.toast(`拉取了 ${saved.length} 篇新文章`);
                         Util.log('after save articles');
+                        // 会在后退栈里叠加新页面 显示后退按钮而不是汉堡菜单 因此不跳转
+                        // $router.to($route('site', {feedUrl: feedUrl}));
                         this.refresh();
                     } catch (e) {
                         $ui.alert('发生了异常: ' + e);
@@ -52,24 +52,19 @@ module.exports = {
                 for (const [k, v] of sites) {
                     options.push({title: v.siteName, value: v.feedUrl});
                 }
-                let option = await $input.select({
+                let selected = await $input.select({
                     title: '移除哪一个',
+                    multiple: true,
                     options: options
                 });
-                if (option) {
-                    Util.log('remove:', option)
-                    siteDao.delete(option.value);
-                    articleDao.deleteByFeedUrl(option.value);
+                if (selected) {
+                    Util.log('remove selected:', selected)
+                    for (const option of selected) {
+                        siteDao.delete(option.value);
+                        articleDao.deleteByFeedUrl(option.value);
+                    }
                     this.refresh();
                 }
-            }
-        },
-        {
-            title: '切换样式',
-            icon: $icon('view_compact'),
-            onClick: function () {
-                Util.setSimpleStyle(!Util.isSimpleStyle());
-                this.refresh();
             }
         },
     ],

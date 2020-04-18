@@ -5,7 +5,7 @@ const siteDao = new SiteDao();
 const ArticleDao = require('../dao/ArticleDao');
 const articleDao = new ArticleDao();
 
-async function refresh(site) {
+async function refreshNow(site) {
     try {
         $ui.toast('正在刷新...');
         const result = await feed(site.feedUrl);
@@ -26,34 +26,54 @@ async function refresh(site) {
 }
 
 module.exports = {
+    _needFreshNow: false,
     type: 'list',
-    _created: false,
     beforeCreate: function () {
         Util.log('beforeCreate 组件获取数据之前，在 fetch() 方法执行之前');
     },
     async fetch(context) {
         Util.log('on site page context=', context);
         let site = siteDao.findByFeedUrl(context.args.feedUrl);
-        if (this._created) {
+        if (!site) {
+            $ui.toast('不存在的站点');
+            return;
+        }
+        const page = context.page || 1;
+        if (page === 1 && this._needFreshNow) {
             // 已创建再进入 fetch 说明是下拉刷新
-            site = await refresh(site);
+            Util.log('下拉刷新 refreshNow page=', page, ' _needFreshNow=', this._needFreshNow);
+            site = await refreshNow(site);
         }
         const items = [];
-
-        items.push({
-            title: site.siteName + ' ' + site.siteUrl,
-            summary: `更新时间：${Util.dateToString(site.pubDate)}\n${site.description}`,
-            onClick: function () {
-                $ui.browser(site.siteUrl);
-            }
-        });
-
-        items.push({
-            title: '上次刷新：' + Util.dateToString(site.updateAt),
-            style: 'category'
-        });
-
-        const list = articleDao.listByFeedUrl(site.feedUrl);
+        const {items: list, hasNext, totalPage} = articleDao.listPageByFeedUrl(site.feedUrl, page, this.pageSize);
+        if (page === 1) {
+            items.push({
+                title: site.siteName + ' ' + site.siteUrl,
+                summary: `更新时间：${Util.dateToString(site.pubDate)}\n${site.description}`,
+                onClick: function () {
+                    $ui.browser(site.siteUrl);
+                }
+            });
+            items.push({
+                title: (totalPage > 1 ? `第${page}/${totalPage}页 ` : '') +
+                    '上次刷新：' + Util.dateToString(site.updateAt),
+                style: 'category',
+                action: {
+                    title: Util.isSimpleStyle() ? '简单样式' : '文章样式',
+                    onClick: function () {
+                        Util.setSimpleStyle(!Util.isSimpleStyle());
+                        this._needFreshNow = false;
+                        this.refresh();
+                    }
+                }
+            });
+        }
+        if (page > 1) {
+            items.push({
+                title: `第${page}/${totalPage}页`,
+                style: 'category',
+            });
+        }
         for (const article of list) {
             if (Util.isSimpleStyle()) {
                 items.push({
@@ -75,10 +95,14 @@ module.exports = {
                 });
             }
         }
-        return items;
+        Util.log('hasNext', hasNext);
+        return {
+            items,
+            nextPage: hasNext ? page + 1 : null
+        };
     },
     created: function () {
-        this._created = true;
+        this._needFreshNow = true;
         Util.log('created 组件已获取数据，在 fetch() 方法执行完成之后');
     },
     activated: function () {

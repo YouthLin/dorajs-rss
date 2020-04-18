@@ -52,7 +52,7 @@ module.exports = function (feedUrl) {
                 responseType: 'stream'
             }).then(response => {
                 response.data.pipe(parser);
-            });
+            }).catch(reject);
         } catch (e) {
             Util.log('feed error:', e)
             reject(e);
