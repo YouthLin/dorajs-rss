@@ -1,7 +1,7 @@
 {
   "listStyle": {
     "type": "string",
-    "default": "simple",
+    "default": "article",
     "title": "列表样式: [simple|article]"
   }
 }

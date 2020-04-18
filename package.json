@@ -1,7 +1,7 @@
 {
   "name": "dorajs-rss",
   "displayName": "RSS 聚合阅读",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "uuid": "69e8910d-16aa-4bcf-be14-bcd9c5d6758d",
   "description": "通过 RSS 订阅聚合阅读任何喜爱的站点",
   "icon": "assets/icon.svg",
@@ -20,7 +20,7 @@
   "contributes": {
     "search": null
   },
-  "homepage": "",
+  "homepage": "https://youthlin.com/",
   "engines": {
     "dora": ">=1.6.3"
   },
@@ -30,5 +30,8 @@
   "dependencies": {
     "feedparser": "^2.2.9",
     "request": "^2.88.2"
-  }
+  },
+  "categories": [
+    "news"
+  ]
 }

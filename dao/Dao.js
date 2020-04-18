@@ -15,8 +15,8 @@ class Dao {
     }
 
     delete(key) {
-        const old = $storage.get(key);
-        $storage.put(key, null);
+        const old = $storage.get(encodeURIComponent(key));
+        $storage.put(encodeURIComponent(key), null);
         return old;
     }
 

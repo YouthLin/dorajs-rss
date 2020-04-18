@@ -13,7 +13,7 @@ module.exports = class ArticleDao {
     }
 
     deleteByFeedUrl(feedUrl) {
-        return this.dao.delete(feedUrl);
+        return this.dao.delete(ARTICLES_PREFIX + feedUrl);
     }
 
     groupByGuid(feedUrl) {

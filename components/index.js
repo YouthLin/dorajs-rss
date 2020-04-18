@@ -58,8 +58,8 @@ module.exports = {
                 });
                 if (option) {
                     Util.log('remove:', option)
-                    siteDao.delete(option.feedUrl);
-                    articleDao.deleteByFeedUrl(option.feedUrl);
+                    siteDao.delete(option.value);
+                    articleDao.deleteByFeedUrl(option.value);
                     this.refresh();
                 }
             }

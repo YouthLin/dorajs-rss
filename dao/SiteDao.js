@@ -1,5 +1,6 @@
 const Site = require('../data/Site');
 const Dao = require('./Dao');
+const Util = require('../util');
 const SITES = 'sites';
 
 class SiteDao {
@@ -16,6 +17,7 @@ class SiteDao {
     delete(feedUrl) {
         const feedUrlMap = this.groupByFeedUrl();
         feedUrlMap.delete(feedUrl);
+        Util.log('after delete,', feedUrl, ' before save new map:', feedUrlMap);
         this.dao.save(SITES, [...feedUrlMap.values()]);
     }
 
