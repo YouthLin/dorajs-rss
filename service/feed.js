@@ -1,4 +1,3 @@
-const request = require('request');
 const FeedParser = require('feedparser');
 const Site = require('../data/Site');
 const Article = require('../data/Article');
@@ -8,18 +7,7 @@ module.exports = function (feedUrl) {
     return new Promise((resolve, reject) => {
         try {
             Util.log('start feed: ', feedUrl);
-            const req = request(feedUrl);
             const parser = new FeedParser({});
-            req.on('error', reject);
-            req.on('response', function (res) {
-                // `this` is `req`, which is a stream
-                const stream = this;
-                if (res.statusCode !== 200) {
-                    this.emit('error', new Error('Bad status code'));
-                } else {
-                    stream.pipe(parser);
-                }
-            });
             parser.on('error', reject);
             parser.on('readable', function () {
                 const stream = this;
@@ -56,6 +44,14 @@ module.exports = function (feedUrl) {
                     }),
                     articles: this.items,
                 });
+            });
+            // 发起请求
+            $http({
+                method: 'get',
+                url: feedUrl,
+                responseType: 'stream'
+            }).then(response => {
+                response.data.pipe(parser);
             });
         } catch (e) {
             Util.log('feed error:', e)
