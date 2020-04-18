@@ -50,7 +50,11 @@ module.exports = class ArticleDao {
             }
             guidMap.set(article.guid, article);
         }
-        this.dao.save(ARTICLES_PREFIX + feedUrl, [...guidMap.values()]);
+        const all = [...guidMap.values()];
+        all.sort(((a, b) => {
+            return b.pubDate - a.pubDate;
+        }));
+        this.dao.save(ARTICLES_PREFIX + feedUrl, all);
         return newArticle;
     }
 
