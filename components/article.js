@@ -17,8 +17,9 @@ module.exports = {
         }
 
         const categories = article.categories || [];
-        const prefix = `<p>时间：${Util.dateToString(article.pubDate)}` +
-            (categories.length > 0 ? '<br>分类：' + categories.join(', ') : '') + '</p><hr>';
+        const prefix = Util.joinNotEmpty('<p>', '<br>', '</p><hr>',
+            Util.dateToString(article.pubDate, '时间：'),
+            Util.joinNotEmpty('分类：', ', ', '', categories.join(', ')));
 
         const commentLink = article.commentLink || '';
         const url = guid.startsWith("http") ? `<a href="${guid}">阅读原文</a>` : '';

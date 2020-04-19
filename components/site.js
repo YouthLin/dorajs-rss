@@ -115,8 +115,8 @@ module.exports = {
 
         items.push({
             title: site.siteName + ' ' + site.siteUrl,
-            summary: `更新时间：${Util.dateToString(site.pubDate)}` +
-                (site.description ? '\n' + site.description : ''),
+            summary: Util.joinNotEmpty('', '\n', '',
+                Util.dateToString(site.pubDate, '更新时间：'), site.description),
             onClick: () => {
                 $ui.browser(site.siteUrl);
             }

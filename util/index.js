@@ -7,17 +7,42 @@ class Util {
         console.log(...args);
     }
 
+    static joinNotEmpty(prefix, separator, suffix, ...elements) {
+        let ret = '';
+        let hasElement = false;
+        for (const element of elements) {
+            if (element) {
+                if (hasElement) {
+                    ret = ret + separator + element;
+                } else {
+                    ret = prefix + element;
+                }
+                hasElement = true;
+            }
+        }
+        if (hasElement) {
+            ret = ret + suffix;
+        }
+        return ret;
+    }
+
     /**
      * 日期转字符串
+     * 当不是日期时返回空串
      * @return yyyy-MM-dd HH:mm
      * */
-    static dateToString(dateStr) {
+    static dateToString(dateStr, prefix = '', suffix = '') {
         const date = new Date(dateStr);
-        return date.getFullYear() +
+        if (isNaN(date.getFullYear())) {
+            Util.log('Invalid Date:', dateStr);
+            return '';
+        }
+        return prefix + date.getFullYear() +
             '-' + (date.getMonth() + 1).toString().padStart(2, '0') +
             '-' + date.getDate().toString().padStart(2, '0') +
             ' ' + date.getHours().toString().padStart(2, '0') +
-            ':' + date.getMinutes().toString().padStart(2, '0');
+            ':' + date.getMinutes().toString().padStart(2, '0') +
+            suffix;
     }
 
     /**
