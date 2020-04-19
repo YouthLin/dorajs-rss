@@ -27,7 +27,7 @@ module.exports = class ArticleDao {
         return {
             items: all.slice(start, end),
             totalPage: Math.floor((all.length - 1) / pageSize) + 1,
-            hasNext: end < all.length,
+            totalCount: all.length,
         };
     }
 
@@ -51,8 +51,9 @@ module.exports = class ArticleDao {
             guidMap.set(article.guid, article);
         }
         const all = [...guidMap.values()];
+        // 新的排前面
         all.sort(((a, b) => {
-            return b.pubDate - a.pubDate;
+            return new Date(b.pubDate) - new Date(a.pubDate);
         }));
         this.dao.save(ARTICLES_PREFIX + feedUrl, all);
         return newArticle;

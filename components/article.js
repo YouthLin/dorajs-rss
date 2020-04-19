@@ -30,7 +30,7 @@ module.exports = {
         return {
             content: {
                 title: article.title,
-                html: `<style>img{width:100%;height:auto;}pre{max-width: 100%;overflow-x: scroll}</style>` +
+                html: `<style>*{max-width: 100vw;overflow-x: scroll}</style>` +
                     `${prefix}${article.content}${suffix}`
             }
         }

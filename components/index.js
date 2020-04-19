@@ -15,14 +15,25 @@ module.exports = {
             title: '添加',
             icon: $icon('add'),
             onClick: async function () {
-                const feedUrl = await $input.prompt({
+                let feedUrl = await $input.prompt({
                     title: '请输入 RSS 地址',
                     hint: '示例：https://youthlin.com/feed',
                     value: 'https://'
                 });
                 if (feedUrl) {
+                    feedUrl = feedUrl.trim();
+                    if (feedUrl.startsWith('https://http://') || feedUrl.startsWith('https://https://')) {
+                        feedUrl = feedUrl.substr('https://'.length);
+                    }
+                    if (!(feedUrl.startsWith('http://') || feedUrl.startsWith('https://'))) {
+                        feedUrl = 'https://' + feedUrl;
+                    }
+                    if (feedUrl.length <= 'https://'.length) {
+                        $ui.alert('请输入正确的 feed 地址');
+                        return;
+                    }
                     if (siteDao.groupByFeedUrl().has(feedUrl)) {
-                        $ui.toast('该站点已存在');
+                        $ui.toast('该站点已存在：' + feedUrl);
                         return;
                     }
                     $ui.toast('解析中, 请稍后...');
@@ -53,7 +64,7 @@ module.exports = {
                     options.push({title: v.siteName, value: v.feedUrl});
                 }
                 let selected = await $input.select({
-                    title: '移除哪一个',
+                    title: '选择要移除的站点',
                     multiple: true,
                     options: options
                 });

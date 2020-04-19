@@ -16,16 +16,16 @@ module.exports = function (feedUrl) {
                 }
                 let article;
                 while (article = stream.read()) {
-                    Util.log('read one feed article');
+                    Util.log('read one feed article.', this.items.length);
                     this.items.push(new Article({
                         feedUrl: feedUrl,
                         guid: article.guid,
-                        title: Util.htmlDeCode(article.title),
+                        title: Util.fromHtmlEntities(article.title),
                         author: article.author,
-                        summary: Util.htmlDeCode(article.summary),
+                        summary: Util.fromHtmlEntities(article.summary),
                         image: Util.getImgUrl(article.description),
                         categories: article.categories,
-                        content: Util.htmlDeCode(article.description),
+                        content: Util.fromHtmlEntities(article.description),
                         link: article.link,
                         commentLink: article.comments,
                         pubDate: article.pubDate,

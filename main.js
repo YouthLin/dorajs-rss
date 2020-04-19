@@ -4,7 +4,8 @@ if (typeof $dora == 'undefined') {
     process.exit(-1)
 }
 
-console.info('Congratulation, your addon runs successfully!')
+// 入口文件 自动进入 components/index.js 作为首页
+
 $dora.mixin({
     pageSize: 20
 });

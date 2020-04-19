@@ -1,9 +1,5 @@
 class Dao {
     constructor() {
-        if (typeof $storage === 'undefined') {
-            globalThis.$storage = new Map();
-            globalThis.$storage.prototype.put = (k, v) => $storage.set(k, v);
-        }
     }
 
     save(key, value) {
@@ -16,7 +12,7 @@ class Dao {
 
     delete(key) {
         const old = $storage.get(encodeURIComponent(key));
-        $storage.put(encodeURIComponent(key), null);
+        $storage.remove(encodeURIComponent(key));
         return old;
     }
 

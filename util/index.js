@@ -36,23 +36,12 @@ class Util {
      * @see https://stackoverflow.com/a/27020300
      */
     static fromHtmlEntities(string) {
-        return (string + "").replace(/&#\d+;/gm, function (s) {
-            return String.fromCharCode(s.match(/\d+/gm)[0]);
-        })
-    }
-
-    /** 解码一些 HTML 实体 */
-    static htmlDeCode(value) {
-        if (value) {
-            return Util.fromHtmlEntities(value.replace(/&amp;/g, "&")
-                .replace(/&lt;/g, "<")
-                .replace(/&gt;/g, ">")
-                .replace(/&nbsp;/g, " ")
-                .replace(/&quot/g, "'")
-                .replace(/ width="(.*?)"/g, " width=\"100%\"")
-                .replace(/ height="(.*?)"/g, " height=\"auto\""));
+        if (string) {
+            return (string + "").replace(/&#\d+;/gm, function (s) {
+                return String.fromCharCode(s.match(/\d+/gm)[0]);
+            });
         }
-        return '';
+        return string;
     }
 
     /** 获取 html 中第一项图片的地址 */
