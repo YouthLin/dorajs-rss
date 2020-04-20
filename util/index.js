@@ -1,6 +1,80 @@
 const LIST_STYLE = 'listStyle';
 const SIMPLE = 'simple';
 const ARTICLE = 'article';
+const DEFAULT_SITE = [
+    {
+        "feedUrl": "https://youthlin.com/feed",
+        "siteName": "霖博客(扩展作者)"
+    },
+    {
+        "feedUrl": "https://linroid.com/atom.xml",
+        "siteName": "linroid(软件作者)"
+    },
+    {
+        "feedUrl": "https://www.zhangxinxu.com/wordpress/feed/",
+        "siteName": "张鑫旭-鑫空间-鑫生活"
+    },
+    {
+        "feedUrl": "https://www.ruanyifeng.com/blog/atom.xml",
+        "siteName": "阮一峰的网络日志"
+    },
+    {
+        "feedUrl": "https://zhihu.com/rss",
+        "siteName": "知乎每日精选"
+    },
+    {
+        "feedUrl": "https://www.ithome.com/rss",
+        "siteName": "IT之家"
+    },
+    {
+        "feedUrl": "https://appinn.com/feed",
+        "siteName": "小众软件"
+    },
+    {
+        "feedUrl": "https://sspai.com/feed",
+        "siteName": "少数派"
+    },
+    {
+        "feedUrl": "http://www.geekpark.net/rss",
+        "siteName": "极客公园"
+    },
+    {
+        "feedUrl": "https://www.ifanr.com/feed",
+        "siteName": "爱范儿"
+    },
+    {
+        "feedUrl": "https://www.pingwest.com/feed",
+        "siteName": "PingWest品玩"
+    },
+    {
+        "feedUrl": "https://feed.iplaysoft.com/",
+        "siteName": "异次元软件世界"
+    },
+    {
+        "feedUrl": "http://www.waerfa.com/feed",
+        "siteName": "Mac玩儿法"
+    },
+    {
+        "feedUrl": "http://www.people.com.cn/rss/politics.xml",
+        "siteName": "时政频道"
+    },
+    {
+        "feedUrl": "http://www.people.com.cn/rss/world.xml",
+        "siteName": "国际频道"
+    },
+    {
+        "feedUrl": "http://www.people.com.cn/rss/haixia.xml",
+        "siteName": "海峡两岸"
+    },
+    {
+        "feedUrl": "http://www.people.com.cn/rss/it.xml",
+        "siteName": "IT频道"
+    },
+    {
+        "feedUrl": "http://www.people.com.cn/rss/scitech.xml",
+        "siteName": "科技频道"
+    }
+];
 
 class Util {
     static log(...args) {
@@ -62,9 +136,22 @@ class Util {
      */
     static fromHtmlEntities(string) {
         if (string) {
-            return (string + "").replace(/&#\d+;/gm, function (s) {
-                return String.fromCharCode(s.match(/\d+/gm)[0]);
-            });
+            return (string + "")
+                .replace(/&amp;/g, "&")
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">")
+                .replace(/&nbsp;/g, " ")
+                .replace(/&quot/g, "'")
+                .replace(/&#\d+;/gm, function (s) {
+                    return String.fromCharCode(s.match(/\d+/gm)[0]);
+                });
+        }
+        return string;
+    }
+
+    static removeHtmlTags(string) {
+        if (string) {
+            return string.replace(/<\/?.+?\/?>/g, '').trim();
         }
         return string;
     }
@@ -90,6 +177,9 @@ class Util {
         }
     }
 
+    static getDefaultSites() {
+        return DEFAULT_SITE;
+    }
 }
 
 module.exports = Util
