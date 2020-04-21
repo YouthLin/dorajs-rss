@@ -152,7 +152,7 @@ module.exports = {
                     author: article.author ? {name: article.author} : null,
                     summary: article.summary,
                     thumb: article.image,
-                    route: $route("article", {feedUrl: site.feedUrl, guid: article.guid})
+                    route: $route("article", {feedUrl: site.feedUrl, siteUrl: site.siteUrl, guid: article.guid})
                 });
             }
         }
