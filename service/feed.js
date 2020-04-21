@@ -17,13 +17,16 @@ module.exports = function (feedUrl) {
                 let article;
                 while (article = stream.read()) {
                     Util.log('read one feed article.', this.items.length);
+                    if (this.items.length === 0) {
+                        this.baseLink = Util.getFirstUrlOriginOrNull(article.link, article.guid, this.meta.link, feedUrl);
+                    }
                     this.items.push(new Article({
                         feedUrl: feedUrl,
                         guid: article.guid,
                         title: Util.fromHtmlEntities(article.title),
                         author: article.author,
                         summary: Util.removeHtmlTags(Util.fromHtmlEntities(article.summary || article.description)),
-                        image: Util.getImgUrl(article.description || article.summary),
+                        image: Util.getImgUrl(this.baseLink, article.description || article.summary),
                         categories: article.categories,
                         content: Util.fromHtmlEntities(article.description),
                         link: article.link,

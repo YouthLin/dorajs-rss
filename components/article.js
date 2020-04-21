@@ -29,20 +29,10 @@ module.exports = {
         if (url || comment) {
             suffix = `<hr><p>${url} ${comment}</p>`;
         }
-        let link = null;
-        try {
-            if ((article.link || '').startsWith('http')) {
-                link = new URL(article.link).origin;
-            } else if ((article.guid || '').startsWith('http')) {
-                link = new URL(article.guid).origin;
-            } else if ((siteUrl || '').startsWith('http')) {
-                link = new URL(siteUrl).origin;
-            }
-        } catch (e) {
-        }
         let baseUrl = '';
-        if (link) {
-            baseUrl = `<base href="${link}">`;
+        const baseLink = Util.getFirstUrlOriginOrNull(article.link, article.guid, siteUrl, feedUrl);
+        if (baseLink) {
+            baseUrl = `<base href="${baseLink}">`;
         }
         return {
             content: {

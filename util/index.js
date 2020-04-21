@@ -157,12 +157,39 @@ class Util {
     }
 
     /** 获取 html 中第一项图片的地址 */
-    static getImgUrl(html) {
+    static getImgUrl(baseLink, html) {
         if (html) {
-            const urls = html.match(/(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?.(\.jpg|\.jpeg|\.png|\.gif|\.webp)/);
-            return urls ? urls[0] : null;
+            // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/match
+            let urls = html.match(/(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?.(\.jpg|\.jpeg|\.png|\.gif|\.webp)/);
+            if (urls) {
+                return urls[0];
+            } else if (baseLink) {
+                if (baseLink.endsWith('/')) {
+                    baseLink.substr(0, baseLink.length - 1);
+                }
+                urls = html.match(/ src=['"]?(([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#]).(\.jpg|\.jpeg|\.png|\.gif|\.webp))['"]?/);
+                if (urls) {
+                    Util.log('image 相对 URL:', urls);
+                    // [...groups, index, input]
+                    // urls[1] 是第一个捕获组
+                    return baseLink + urls[1];
+                }
+            }
         }
         return null;
+    }
+
+    static getFirstUrlOriginOrNull(...urls) {
+        let link = null;
+        for (let url of urls) {
+            if ((url || '').startsWith('http')) {
+                try {
+                    link = new URL(url).origin;
+                } catch (ignore) {
+                }
+            }
+        }
+        return link;
     }
 
     static isSimpleStyle() {
